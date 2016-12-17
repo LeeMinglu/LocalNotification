@@ -9,12 +9,15 @@
 import UIKit
 import UserNotifications
 
-class ViewController: UIViewController, UNUserNotificationCenterDelegate {
+class ViewController: UIViewController, UNUserNotificationCenterDelegate, UITextFieldDelegate{
+    @IBOutlet weak var textfield: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        self.textfield.resignFirstResponder()
         
+        self.textfield.delegate = self
     }
     
     @IBAction func rock(_ sender: AnyObject) {
@@ -22,8 +25,6 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate {
         notificatineCenter.delegate = self
         
         //请求授权
-        
-        
         notificatineCenter.requestAuthorization(options: [UNAuthorizationOptions.alert, UNAuthorizationOptions.badge, UNAuthorizationOptions.sound], completionHandler: { (granted, error) in
             if granted {
                 print("注册成功")
@@ -56,8 +57,27 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate {
 //            }
             
         }
+ 
         
     }
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//        if center. == String("rock"){
+//            print(response.notification.request.content.title)
+//        }
+//    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        
+//       print(completionHandler([.badge]))
+        if notification.request.identifier  == "rock" {
+            print("发送了自定义的通知")
+            print(notification.request.content)
+        }
+    }
+    
+
     
 
     override func didReceiveMemoryWarning() {
